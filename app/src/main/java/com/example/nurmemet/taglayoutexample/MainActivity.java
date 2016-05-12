@@ -7,8 +7,10 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.example.nurmemet.library.DrawableUtil;
 import com.example.nurmemet.library.TagGroupLayout;
@@ -26,25 +28,41 @@ public class MainActivity extends AppCompatActivity implements TagGroupLayout.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DrawableUtil drawableUtil=new DrawableUtil();
+        final DrawableUtil drawableUtil = new DrawableUtil();
         mTagGroupDef = (TagGroupLayout) findViewById(R.id.tag_container);
         mTagGroupDef.setOnItemClick(this);
         mTagGroupDef.setPadding(10, 4);
-        mTagGroupDef.setItemBg(drawableUtil.getBackgroundBorderDrawable(false,Color.RED));
+
         mTagGroupPr = (TagGroupLayout) findViewById(R.id.tag_container_pr);
         mTagGroupPr.setOnItemClick(this);
         mTagGroupPr.setPadding(20, 4);
-        mTagGroupPr.setItemBg(drawableUtil.getBackgroundBorderDrawable(true,Color.parseColor("#FF3D7F")));
-        mTagGroupPr.setTextColor(Color.WHITE);
+
         mTagGroupSelecable = (TagGroupLayout) findViewById(R.id.tag_container_selectable);
         mTagGroupSelecable.setOnItemClick(this);
         mTagGroupSelecable.setPadding(30, 4);
-        mTagGroupSelecable.setItemBg(drawableUtil.getBackgroundBorderDrawable(true,Color.parseColor("#FF3D7F")));
-        mTagGroupSelecable.setTextColor(Color.WHITE);
 
-        mTagGroupSelecable.setTags(getList());
-        mTagGroupPr.setTags(getList());
-        mTagGroupDef.setTags(getList());
+
+        mTagGroupSelecable.setTags(getList(), new TagGroupLayout.BindProperty() {
+            @Override
+            public void OnBindProperty(TextView view) {
+                view.setBackground(drawableUtil.getStateListDrawable());
+                view.setTextColor(drawableUtil.getColorStateList());
+            }
+        });
+        mTagGroupPr.setTags(getList(), new TagGroupLayout.BindProperty() {
+            @Override
+            public void OnBindProperty(TextView view) {
+                view.setBackground(drawableUtil.getBackgroundBorderDrawable(false, Color.parseColor("#38BE07")));
+                view.setTextColor(Color.parseColor("#38BE07"));
+            }
+        });
+        mTagGroupDef.setTags(getList(), new TagGroupLayout.BindProperty() {
+            @Override
+            public void OnBindProperty(TextView view) {
+                view.setBackground(drawableUtil.getBackgroundBorderDrawable(false, Color.parseColor("#FF3D7F")));
+
+            }
+        });
     }
 
     private ArrayList<String> getList() {

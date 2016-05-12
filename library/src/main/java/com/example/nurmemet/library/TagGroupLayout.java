@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.support.v4.content.ContextCompat;
@@ -30,7 +31,12 @@ public class TagGroupLayout extends ViewGroup {
         public void onItemClick(int position, Object data);
     }
 
+    public static interface BindProperty {
+        public void OnBindProperty(TextView view);
+    }
+
     private OnItemClick onItemClick;
+    private BindProperty onBindProperty;
     private int verticalSpace = 20;
     private int horizontalSpace = 20;
     private float defPaddingLeftRight = 10;
@@ -38,9 +44,7 @@ public class TagGroupLayout extends ViewGroup {
     private List<Object> list = new ArrayList<>();
     private boolean checkable = true;
     private View checkedView;
-    private int textColor;
-    private ColorStateList textColorStateList;
-    private Drawable mItemBg;
+    private DrawableUtil drawableUtil;
 
     public void setOnItemClick(OnItemClick onItemClick) {
         this.onItemClick = onItemClick;
@@ -60,16 +64,22 @@ public class TagGroupLayout extends ViewGroup {
         horizontalSpace = a.getDimensionPixelSize(R.styleable.TagGroupLayout_horizontal_space, 20);
         verticalSpace = a.getDimensionPixelSize(R.styleable.TagGroupLayout_vertical_space, 20);
         //textColorStateList = ContextCompat.getColorStateList(context, R.color.main_text_color_to_white);
+
+        drawableUtil = new DrawableUtil();
         a.recycle();
 
 
     }
 
-    public void setTags(List<? extends Object> list) {
+    public void setTags(List<? extends Object> list, BindProperty onBindProperty) {
         if (list != null && !list.isEmpty()) {
             for (int i = 0; i < list.size(); i++) {
                 this.list.add(list.get(i));
-                this.addView(getTag(list.get(i).toString(), i));
+                TextView tv = getTag(list.get(i).toString(), i);
+                if (onBindProperty != null) {
+                    onBindProperty.OnBindProperty(tv);
+                }
+                this.addView(tv);
             }
 
         }
@@ -90,14 +100,6 @@ public class TagGroupLayout extends ViewGroup {
         this.checkable = checkable;
     }
 
-    public void setTextColor(int color) {
-        textColor = color;
-    }
-
-    public void setTextColor(ColorStateList colorStateList) {
-        this.textColorStateList = colorStateList;
-    }
-
 
     public TextView getTag(Object obj, final int position) {
 
@@ -105,18 +107,11 @@ public class TagGroupLayout extends ViewGroup {
         int lr = (int) dp2px(getContext(), defPaddingLeftRight);
         int tb = (int) dp2px(getContext(), defPaddingTopBottom);
         tag.setPadding(lr, tb, lr, tb);
-        if (mItemBg != null) {
-            tag.setBackground(mItemBg);
-        }
+
 
         tag.setClickable(true);
         tag.setText(obj.toString());
-        if (textColor != 0) {
-            tag.setTextColor(textColor);
-        }
-        if (textColorStateList != null) {
-            tag.setTextColor(textColorStateList);
-        }
+
         tag.setGravity(Gravity.CENTER);
 
         tag.setOnClickListener(new OnClickListener() {
@@ -210,14 +205,6 @@ public class TagGroupLayout extends ViewGroup {
     public float sp2px(Context context, float sp) {
         final float scale = context.getResources().getDisplayMetrics().scaledDensity;
         return sp * scale;
-    }
-
-
-
-
-
-    public void setItemBg(Drawable drawable) {
-        this.mItemBg = drawable;
     }
 
 

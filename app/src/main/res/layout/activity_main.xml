@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:padding="15dp"
     android:orientation="vertical"
+    android:background="#EEEEEE"
     tools:context="com.example.nurmemet.taglayoutexample.MainActivity"
     >
 
@@ -15,6 +16,7 @@
         android:text="default tags"
         android:layout_marginBottom="15dp"
         android:textSize="18sp"
+        android:textColor="@android:color/black"
         />
     <com.example.nurmemet.library.TagGroupLayout
         android:id="@+id/tag_container"
@@ -28,6 +30,7 @@
         android:text="default tags"
         android:layout_marginBottom="15dp"
         android:textSize="18sp"
+        android:textColor="@android:color/black"
         />
     <com.example.nurmemet.library.TagGroupLayout
         android:id="@+id/tag_container_pr"
@@ -41,6 +44,7 @@
         android:text="selectable tags"
         android:layout_marginBottom="15dp"
         android:textSize="18sp"
+        android:textColor="@android:color/black"
         />
     <com.example.nurmemet.library.TagGroupLayout
         android:id="@+id/tag_container_selectable"
