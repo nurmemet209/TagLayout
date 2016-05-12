@@ -5,4 +5,5 @@
         <attr name="horizontal_space" format="dimension"/>
         <attr name="vertical_space" format="dimension"/>
     </declare-styleable>
+    <attr name="TagGroupLayoutStyle" format="reference"/>
 </resources>

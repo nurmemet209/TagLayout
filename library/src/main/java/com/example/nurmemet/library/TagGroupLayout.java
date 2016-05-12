@@ -3,11 +3,19 @@ package com.example.nurmemet.library;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.graphics.drawable.shapes.RoundRectShape;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckedTextView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -31,7 +39,8 @@ public class TagGroupLayout extends ViewGroup {
     private boolean checkable = true;
     private View checkedView;
     private int textColor;
-    private ColorStateList colorStateList;
+    private ColorStateList textColorStateList;
+    private Drawable mItemBg;
 
     public void setOnItemClick(OnItemClick onItemClick) {
         this.onItemClick = onItemClick;
@@ -42,7 +51,7 @@ public class TagGroupLayout extends ViewGroup {
     }
 
     public TagGroupLayout(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        this(context, attrs, R.attr.TagGroupLayoutStyle);
     }
 
     public TagGroupLayout(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -50,7 +59,7 @@ public class TagGroupLayout extends ViewGroup {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TagGroupLayout);
         horizontalSpace = a.getDimensionPixelSize(R.styleable.TagGroupLayout_horizontal_space, 20);
         verticalSpace = a.getDimensionPixelSize(R.styleable.TagGroupLayout_vertical_space, 20);
-        colorStateList = ContextCompat.getColorStateList(context, R.color.main_text_color_to_white);
+        //textColorStateList = ContextCompat.getColorStateList(context, R.color.main_text_color_to_white);
         a.recycle();
 
 
@@ -86,23 +95,27 @@ public class TagGroupLayout extends ViewGroup {
     }
 
     public void setTextColor(ColorStateList colorStateList) {
-        this.colorStateList = colorStateList;
+        this.textColorStateList = colorStateList;
     }
 
 
     public TextView getTag(Object obj, final int position) {
+
         TextView tag = new TextView(getContext());
         int lr = (int) dp2px(getContext(), defPaddingLeftRight);
         int tb = (int) dp2px(getContext(), defPaddingTopBottom);
         tag.setPadding(lr, tb, lr, tb);
-        tag.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.tag_view_sl));
+        if (mItemBg != null) {
+            tag.setBackground(mItemBg);
+        }
+
         tag.setClickable(true);
         tag.setText(obj.toString());
         if (textColor != 0) {
             tag.setTextColor(textColor);
         }
-        if (colorStateList != null) {
-            tag.setTextColor(colorStateList);
+        if (textColorStateList != null) {
+            tag.setTextColor(textColorStateList);
         }
         tag.setGravity(Gravity.CENTER);
 
@@ -127,6 +140,7 @@ public class TagGroupLayout extends ViewGroup {
 
     }
 
+
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int left = 0;
@@ -141,7 +155,7 @@ public class TagGroupLayout extends ViewGroup {
                 right = left + child.getMeasuredWidth();
                 bottom = top + child.getMeasuredHeight();
                 child.layout(left, top, right, bottom);
-                left += child.getMeasuredWidth()+horizontalSpace;
+                left += child.getMeasuredWidth() + horizontalSpace;
             } else {
                 right = left + child.getMeasuredWidth();
                 bottom = top + child.getMeasuredHeight();
@@ -167,7 +181,7 @@ public class TagGroupLayout extends ViewGroup {
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
             measureChild(child, widthMeasureSpec, heightMeasureSpec);
-            if (w + child.getMeasuredWidth()  > speckWidth) {
+            if (w + child.getMeasuredWidth() > speckWidth) {
                 h += child.getMeasuredHeight() + verticalSpace;
                 w = child.getMeasuredWidth();
             } else {
@@ -197,4 +211,14 @@ public class TagGroupLayout extends ViewGroup {
         final float scale = context.getResources().getDisplayMetrics().scaledDensity;
         return sp * scale;
     }
+
+
+
+
+
+    public void setItemBg(Drawable drawable) {
+        this.mItemBg = drawable;
+    }
+
+
 }
