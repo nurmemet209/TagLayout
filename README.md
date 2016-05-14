@@ -20,11 +20,20 @@ taglayout
    
     
 ```java
- mTagGroupSelecable = (TagGroupLayout) findViewById(R.id.tag_container_selectable);
-        mTagGroupSelecable.setOnItemClick(this);
-        mTagGroupSelecable.setPadding(30, 4);
+mTagGroupSelecable.setTags(getList(), new TagGroupLayout.BindProperty() {
+            @Override
+            public void OnBindProperty(TextView view) {
+                view.setBackground(drawableUtil.getStateListDrawable());
+                view.setTextColor(drawableUtil.getColorStateList());
+            }
+        });
 ```
 
 screenshot
 ------------
 <img src="screenshot.png"/>
+
+Discussing
+---
+* email 2335515050@qq.com
+* wechat 2335515050
