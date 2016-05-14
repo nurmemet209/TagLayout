@@ -29,15 +29,15 @@ public class MainActivity extends AppCompatActivity implements TagGroupLayout.On
 
         final DrawableUtil drawableUtil = new DrawableUtil();
         mTagGroupDef = (TagGroupLayout) findViewById(R.id.tag_container);
-        mTagGroupDef.setmOnItemClick(this);
+        mTagGroupDef.setOnItemClick(this);
         mTagGroupDef.setPadding(10, 4);
 
         mTagGroupPr = (TagGroupLayout) findViewById(R.id.tag_container_pr);
-        mTagGroupPr.setmOnItemClick(this);
+        mTagGroupPr.setOnItemClick(this);
         mTagGroupPr.setPadding(20, 4);
 
         mTagGroupSelecable = (TagGroupLayout) findViewById(R.id.tag_container_selectable);
-        mTagGroupSelecable.setmOnItemClick(this);
+        mTagGroupSelecable.setOnItemClick(this);
         mTagGroupSelecable.setPadding(30, 4);
 
 
@@ -79,24 +79,6 @@ public class MainActivity extends AppCompatActivity implements TagGroupLayout.On
         return list;
     }
 
-    private Drawable getBackgroundBorderDrawable() {
-        float w = dp2px(this, 50);
-        // 外部矩形弧度
-        float[] outerR = new float[]{w - 50, w, w, w, w, w, w, w};
-        // 内部矩形与外部矩形的距离
-        RectF inset = new RectF(70, 70, 70, 70);
-        // 内部矩形弧度
-        float[] innerRadii = new float[]{20, 20, 20, 20, 20, 20, 20, 20};
-
-        RoundRectShape rr = new RoundRectShape(outerR, inset, null);
-        ShapeDrawable drawable = new ShapeDrawable(rr);
-        //指定填充颜色
-        drawable.getPaint().setColor(Color.RED);
-        // 指定填充模式
-        drawable.getPaint().setStyle(Paint.Style.FILL);
-        return drawable;
-
-    }
 
     @Override
     public void onItemClick(int position, Object data) {

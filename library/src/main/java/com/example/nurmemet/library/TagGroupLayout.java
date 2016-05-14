@@ -34,7 +34,7 @@ public class TagGroupLayout extends ViewGroup {
     private boolean mCheckable = true;
     private View mCheckedView;
 
-    public void setmOnItemClick(OnItemClick mOnItemClick) {
+    public void setOnItemClick(OnItemClick mOnItemClick) {
         this.mOnItemClick = mOnItemClick;
     }
 
@@ -86,7 +86,7 @@ public class TagGroupLayout extends ViewGroup {
     }
 
 
-    public TextView getTag(Object obj, final int position) {
+    private TextView getTag(Object obj, final int position) {
 
         TextView tag = new TextView(getContext());
         int lr = (int) dp2px(getContext(), mDefPaddingLeftRight);
@@ -119,6 +119,8 @@ public class TagGroupLayout extends ViewGroup {
 
 
     }
+
+
 
 
     @Override
