@@ -7,7 +7,6 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -30,15 +29,15 @@ public class MainActivity extends AppCompatActivity implements TagGroupLayout.On
 
         final DrawableUtil drawableUtil = new DrawableUtil();
         mTagGroupDef = (TagGroupLayout) findViewById(R.id.tag_container);
-        mTagGroupDef.setOnItemClick(this);
+        mTagGroupDef.setmOnItemClick(this);
         mTagGroupDef.setPadding(10, 4);
 
         mTagGroupPr = (TagGroupLayout) findViewById(R.id.tag_container_pr);
-        mTagGroupPr.setOnItemClick(this);
+        mTagGroupPr.setmOnItemClick(this);
         mTagGroupPr.setPadding(20, 4);
 
         mTagGroupSelecable = (TagGroupLayout) findViewById(R.id.tag_container_selectable);
-        mTagGroupSelecable.setOnItemClick(this);
+        mTagGroupSelecable.setmOnItemClick(this);
         mTagGroupSelecable.setPadding(30, 4);
 
 

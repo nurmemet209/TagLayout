@@ -1,22 +1,12 @@
 package com.example.nurmemet.library;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.StateListDrawable;
-import android.graphics.drawable.shapes.OvalShape;
-import android.graphics.drawable.shapes.RoundRectShape;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckedTextView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,27 +17,25 @@ import java.util.List;
  */
 public class TagGroupLayout extends ViewGroup {
 
-    public static interface OnItemClick {
-        public void onItemClick(int position, Object data);
+    public interface OnItemClick {
+        void onItemClick(int position, Object data);
     }
 
-    public static interface BindProperty {
-        public void OnBindProperty(TextView view);
+    public interface BindProperty {
+        void OnBindProperty(TextView view);
     }
 
-    private OnItemClick onItemClick;
-    private BindProperty onBindProperty;
-    private int verticalSpace = 20;
-    private int horizontalSpace = 20;
-    private float defPaddingLeftRight = 10;
-    private float defPaddingTopBottom = 10;
-    private List<Object> list = new ArrayList<>();
-    private boolean checkable = true;
-    private View checkedView;
-    private DrawableUtil drawableUtil;
+    private OnItemClick mOnItemClick;
+    private int mVerticalSpace = 20;
+    private int mHorizontalSpace = 20;
+    private float mDefPaddingLeftRight = 10;
+    private float mDefPaddingTopBottom = 10;
+    private List<Object> mList = new ArrayList<>();
+    private boolean mCheckable = true;
+    private View mCheckedView;
 
-    public void setOnItemClick(OnItemClick onItemClick) {
-        this.onItemClick = onItemClick;
+    public void setmOnItemClick(OnItemClick mOnItemClick) {
+        this.mOnItemClick = mOnItemClick;
     }
 
     public TagGroupLayout(Context context) {
@@ -61,11 +49,8 @@ public class TagGroupLayout extends ViewGroup {
     public TagGroupLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TagGroupLayout);
-        horizontalSpace = a.getDimensionPixelSize(R.styleable.TagGroupLayout_horizontal_space, 20);
-        verticalSpace = a.getDimensionPixelSize(R.styleable.TagGroupLayout_vertical_space, 20);
-        //textColorStateList = ContextCompat.getColorStateList(context, R.color.main_text_color_to_white);
-
-        drawableUtil = new DrawableUtil();
+        mHorizontalSpace = a.getDimensionPixelSize(R.styleable.TagGroupLayout_horizontal_space, 20);
+        mVerticalSpace = a.getDimensionPixelSize(R.styleable.TagGroupLayout_vertical_space, 20);
         a.recycle();
 
 
@@ -74,7 +59,7 @@ public class TagGroupLayout extends ViewGroup {
     public void setTags(List<? extends Object> list, BindProperty onBindProperty) {
         if (list != null && !list.isEmpty()) {
             for (int i = 0; i < list.size(); i++) {
-                this.list.add(list.get(i));
+                this.mList.add(list.get(i));
                 TextView tv = getTag(list.get(i).toString(), i);
                 if (onBindProperty != null) {
                     onBindProperty.OnBindProperty(tv);
@@ -92,20 +77,20 @@ public class TagGroupLayout extends ViewGroup {
      * @param tp
      */
     public void setPadding(int lr, int tp) {
-        defPaddingLeftRight = lr;
-        defPaddingTopBottom = tp;
+        mDefPaddingLeftRight = lr;
+        mDefPaddingTopBottom = tp;
     }
 
-    public void setCheckable(boolean checkable) {
-        this.checkable = checkable;
+    public void setCheckable(boolean mCheckable) {
+        this.mCheckable = mCheckable;
     }
 
 
     public TextView getTag(Object obj, final int position) {
 
         TextView tag = new TextView(getContext());
-        int lr = (int) dp2px(getContext(), defPaddingLeftRight);
-        int tb = (int) dp2px(getContext(), defPaddingTopBottom);
+        int lr = (int) dp2px(getContext(), mDefPaddingLeftRight);
+        int tb = (int) dp2px(getContext(), mDefPaddingTopBottom);
         tag.setPadding(lr, tb, lr, tb);
 
 
@@ -117,16 +102,16 @@ public class TagGroupLayout extends ViewGroup {
         tag.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkable) {
-                    if (checkedView != null) {
-                        checkedView.setSelected(false);
+                if (mCheckable) {
+                    if (mCheckedView != null) {
+                        mCheckedView.setSelected(false);
                     }
-                    checkedView = v;
-                    checkedView.setSelected(true);
+                    mCheckedView = v;
+                    mCheckedView.setSelected(true);
                 }
 
-                if (onItemClick != null) {
-                    onItemClick.onItemClick(position, list.get(position));
+                if (mOnItemClick != null) {
+                    mOnItemClick.onItemClick(position, mList.get(position));
                 }
             }
         });
@@ -139,23 +124,23 @@ public class TagGroupLayout extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int left = 0;
-        int top = verticalSpace;
+        int top = mVerticalSpace;
         int right = 0;
         int bottom = 0;
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
             if (left + child.getMeasuredWidth() > getMeasuredWidth()) {
                 left = 0;
-                top += verticalSpace + child.getMeasuredHeight();
+                top += mVerticalSpace + child.getMeasuredHeight();
                 right = left + child.getMeasuredWidth();
                 bottom = top + child.getMeasuredHeight();
                 child.layout(left, top, right, bottom);
-                left += child.getMeasuredWidth() + horizontalSpace;
+                left += child.getMeasuredWidth() + mHorizontalSpace;
             } else {
                 right = left + child.getMeasuredWidth();
                 bottom = top + child.getMeasuredHeight();
                 child.layout(left, top, right, bottom);
-                left += child.getMeasuredWidth() + horizontalSpace;
+                left += child.getMeasuredWidth() + mHorizontalSpace;
 
             }
 
@@ -172,19 +157,19 @@ public class TagGroupLayout extends ViewGroup {
         int speckHeightMode = MeasureSpec.getMode(heightMeasureSpec);
         int childCount = getChildCount();
         int w = 0;
-        int h = verticalSpace;
+        int h = mVerticalSpace;
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
             measureChild(child, widthMeasureSpec, heightMeasureSpec);
             if (w + child.getMeasuredWidth() > speckWidth) {
-                h += child.getMeasuredHeight() + verticalSpace;
+                h += child.getMeasuredHeight() + mVerticalSpace;
                 w = child.getMeasuredWidth();
             } else {
-                w += horizontalSpace + child.getMeasuredWidth();
+                w += mHorizontalSpace + child.getMeasuredWidth();
             }
 
             if (i == childCount - 1) {
-                h += child.getMeasuredHeight() + verticalSpace;
+                h += child.getMeasuredHeight() + mVerticalSpace;
             }
         }
         setMeasuredDimension(speckWidth, speckHeightMode == MeasureSpec.EXACTLY ? speckHeight : h);
