@@ -31,7 +31,8 @@ mTagGroupSelecable.setTags(getList(), new TagGroupLayout.BindProperty() {
 
 screenshot
 ------------
-<img src="screenshot.png"/>
+#### git/svn, user, host, servers
+![](screenshot.png)
 
 Discussing
 ---
