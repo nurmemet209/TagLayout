@@ -19,13 +19,12 @@ taglayout
     接口你可以给tag赋予想要的样式 ，字体颜色等
    
     
-```
-git clone git@github.com:meolu/walle-web.git
-cd walle-web
-vi config/web.php # set up module db mysql connection info
-composer install  # error cause by bower-asset, install：composer global require "fxp/composer-asset-plugin:*"
-./yii walle/setup # init walle
-```
+```java
+ mTagGroupSelecable = (TagGroupLayout) findViewById(R.id.tag_container_selectable);
+        mTagGroupSelecable.setOnItemClick(this);
+        mTagGroupSelecable.setPadding(30, 4);
+```java
+
 screenshot
 ------------
 <img src="screenshot.png"/>
