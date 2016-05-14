@@ -19,7 +19,13 @@ taglayout
     接口你可以给tag赋予想要的样式 ，字体颜色等
    
     
-
+```
+git clone git@github.com:meolu/walle-web.git
+cd walle-web
+vi config/web.php # set up module db mysql connection info
+composer install  # error cause by bower-asset, install：composer global require "fxp/composer-asset-plugin:*"
+./yii walle/setup # init walle
+```
 screenshot
 ------------
 <img src="screenshot.png"/>
