@@ -23,7 +23,7 @@ taglayout
  mTagGroupSelecable = (TagGroupLayout) findViewById(R.id.tag_container_selectable);
         mTagGroupSelecable.setOnItemClick(this);
         mTagGroupSelecable.setPadding(30, 4);
-```java
+```
 
 screenshot
 ------------
