@@ -1,12 +1,13 @@
 # TagLayout
 taglayout
 
-<h4>属性</h4>
+属性
+------------
 * horizontal_space 水平间距，tag与tag的距离
 * vertical_space 垂直距离，上下tag的距离
 
 方法
-
+------------
 * setCheckable 是否具有选中功能
 * vertical_space 垂直距离，上下tag的距离
 * setPadding(int lr, int tp)  lr 左右padding,tp 上下padding （都是以dp为单位）
@@ -20,5 +21,5 @@ taglayout
     
 
 screenshot
-
+------------
 <img src="screenshot.png"/>
