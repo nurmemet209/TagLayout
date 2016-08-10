@@ -17,7 +17,9 @@ import java.util.List;
  */
 public class TagGroupLayout extends ViewGroup {
 
-    public interface OnItemClick {
+    private int selectedIndex = 0;
+
+    public interface OnItemChecked {
         void onItemClick(int position, Object data);
     }
 
@@ -25,7 +27,7 @@ public class TagGroupLayout extends ViewGroup {
         void OnBindProperty(TextView view);
     }
 
-    private OnItemClick mOnItemClick;
+    private OnItemChecked mOnItemChecked;
     private int mVerticalSpace = 20;
     private int mHorizontalSpace = 20;
     private float mDefPaddingLeftRight = 10;
@@ -34,8 +36,12 @@ public class TagGroupLayout extends ViewGroup {
     private boolean mCheckable = true;
     private View mCheckedView;
 
-    public void setOnItemClick(OnItemClick mOnItemClick) {
-        this.mOnItemClick = mOnItemClick;
+    public void setOnItemChecked(OnItemChecked mOnItemChecked) {
+        this.mOnItemChecked = mOnItemChecked;
+    }
+
+    public void setSelected(int selected) {
+        this.selectedIndex = selected;
     }
 
     public TagGroupLayout(Context context) {
@@ -93,6 +99,10 @@ public class TagGroupLayout extends ViewGroup {
         int tb = (int) dp2px(getContext(), mDefPaddingTopBottom);
         tag.setPadding(lr, tb, lr, tb);
 
+        if (selectedIndex == position && mCheckable) {
+            tag.setSelected(true);
+            mCheckedView = tag;
+        }
 
         tag.setClickable(true);
         tag.setText(obj.toString());
@@ -103,15 +113,24 @@ public class TagGroupLayout extends ViewGroup {
             @Override
             public void onClick(View v) {
                 if (mCheckable) {
-                    if (mCheckedView != null) {
-                        mCheckedView.setSelected(false);
-                    }
-                    mCheckedView = v;
-                    mCheckedView.setSelected(true);
-                }
+                    if (mCheckedView != v) {
 
-                if (mOnItemClick != null) {
-                    mOnItemClick.onItemClick(position, mList.get(position));
+                        selectedIndex = position;
+                        if (mOnItemChecked != null) {
+                            mOnItemChecked.onItemClick(position, mList.get(position));
+                        }
+
+                        if (mCheckedView != null) {
+                            mCheckedView.setSelected(false);
+                        }
+                        mCheckedView = v;
+                        mCheckedView.setSelected(true);
+                    }
+
+                } else {
+                    if (mOnItemChecked != null) {
+                        mOnItemChecked.onItemClick(position, mList.get(position));
+                    }
                 }
             }
         });
@@ -121,18 +140,16 @@ public class TagGroupLayout extends ViewGroup {
     }
 
 
-
-
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        int left = 0;
-        int top = mVerticalSpace;
+        int left = getPaddingLeft();
+        int top = getPaddingTop();
         int right = 0;
         int bottom = 0;
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
             if (left + child.getMeasuredWidth() > getMeasuredWidth()) {
-                left = 0;
+                left = getPaddingLeft();
                 top += mVerticalSpace + child.getMeasuredHeight();
                 right = left + child.getMeasuredWidth();
                 bottom = top + child.getMeasuredHeight();
@@ -158,7 +175,7 @@ public class TagGroupLayout extends ViewGroup {
         int speckHeight = MeasureSpec.getSize(heightMeasureSpec);
         int speckHeightMode = MeasureSpec.getMode(heightMeasureSpec);
         int childCount = getChildCount();
-        int w = 0;
+        int w = getPaddingLeft()+getPaddingRight();
         int h = mVerticalSpace;
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
@@ -174,6 +191,7 @@ public class TagGroupLayout extends ViewGroup {
                 h += child.getMeasuredHeight() + mVerticalSpace;
             }
         }
+        h += getPaddingTop() + getPaddingBottom();
         setMeasuredDimension(speckWidth, speckHeightMode == MeasureSpec.EXACTLY ? speckHeight : h);
 
 
@@ -194,5 +212,14 @@ public class TagGroupLayout extends ViewGroup {
         return sp * scale;
     }
 
+    public int getSelectedPostion() {
+        return selectedIndex;
+    }
 
+    public Object getSelectedItem() {
+        if (selectedIndex != -1 && mList.size() >= 1) {
+            return mList.get(selectedIndex);
+        }
+        return null;
+    }
 }

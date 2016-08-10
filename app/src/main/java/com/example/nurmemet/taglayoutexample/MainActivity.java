@@ -16,7 +16,7 @@ import com.example.nurmemet.library.TagGroupLayout;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements TagGroupLayout.OnItemClick {
+public class MainActivity extends AppCompatActivity {
 
     TagGroupLayout mTagGroupDef;
     TagGroupLayout mTagGroupPr;
@@ -29,15 +29,12 @@ public class MainActivity extends AppCompatActivity implements TagGroupLayout.On
 
         final DrawableUtil drawableUtil = new DrawableUtil();
         mTagGroupDef = (TagGroupLayout) findViewById(R.id.tag_container);
-        mTagGroupDef.setOnItemClick(this);
         mTagGroupDef.setPadding(10, 4);
 
         mTagGroupPr = (TagGroupLayout) findViewById(R.id.tag_container_pr);
-        mTagGroupPr.setOnItemClick(this);
         mTagGroupPr.setPadding(20, 4);
 
         mTagGroupSelecable = (TagGroupLayout) findViewById(R.id.tag_container_selectable);
-        mTagGroupSelecable.setOnItemClick(this);
         mTagGroupSelecable.setPadding(30, 4);
 
 
@@ -77,12 +74,6 @@ public class MainActivity extends AppCompatActivity implements TagGroupLayout.On
         list.add("ئالىم");
         list.add("يامغۇر");
         return list;
-    }
-
-
-    @Override
-    public void onItemClick(int position, Object data) {
-
     }
 
 
